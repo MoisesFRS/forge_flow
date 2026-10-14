@@ -1,0 +1,35 @@
+version: 1
+project:
+  slug: demo-app
+  execution_mode: autonomous_pr
+  max_parallel_runs: 2
+  github:
+    base_branch: main
+    branch_prefix: forgeflow/
+    merge_requires_human: true
+  classification:
+    adapter: typesafe_jev
+    confidence_threshold: 0.7
+    on_failure: manual_review
+    complexity_bands: [20, 40, 60, 80]
+  routing:
+    provider: openrouter
+    strategy: best_fit_cost_quality
+    allowlist: [] # cadastrar modelos reais antes de executar
+    executor_mode: automatic
+    reviewer_mode: automatic
+  budget:
+    max_cost_usd_per_run: '5.00'
+    max_cost_usd_per_project_month: '100.00'
+  quality:
+    require_tests: true
+    require_lint: true
+    require_independent_review: true
+    require_github_checks: true
+    max_fix_attempts: 3
+  sandbox:
+    runtime: docker
+    network_mode: restricted
+    max_minutes: 45
+    cpus: 2
+    memory_mb: 4096
